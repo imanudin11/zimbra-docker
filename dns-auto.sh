@@ -41,9 +41,6 @@ sed -i 's/dnssec-validation yes/dnssec-validation no/g' /etc/bind/named.conf.opt
 
 # Restart Service & Check results configuring DNS Server
 
-cat /etc/resolv.conf > /tmp/resolv.ori
-echo 'nameserver 127.0.0.1' > /tmp/resolv.add
-cat /tmp/resolv.add /tmp/resolv.ori > /etc/resolv.conf
 /etc/init.d/bind9 restart
 nslookup $HOSTNAME.$DOMAIN
 dig $DOMAIN mx
