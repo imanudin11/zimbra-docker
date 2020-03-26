@@ -42,7 +42,7 @@ RUN zdocs generate-config
 
 # Startup service
 RUN echo 'zdocs write-local-server' > /services.sh
-RUN echo 'echo "$ZIMBRAIP      $ZIMBRAHOST" >> /etc/hosts' >> /services.sh
+RUN echo "echo '$ZIMBRAIP      $ZIMBRAHOST' >> /etc/hosts" >> /services.sh
 RUN echo 'su - lool -c "/opt/zimbra/docs/lool/bin/loolwsd --version --o:sys_template_path=/opt/zimbra/docs/generated/systemplate --o:child_root_path=/opt/zimbra/docs/generated/child-roots --o:file_server_root_path=/opt/zimbra/docs/lool/share/loolwsd"' >> /services.sh
 RUN chmod +x /services.sh
 
