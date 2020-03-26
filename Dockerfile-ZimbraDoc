@@ -1,0 +1,50 @@
+#################################################################
+# Dockerfile for Zimbra Ubuntu
+# Based on Ubuntu 18.04
+# Created by Ahmad Imanudin
+#################################################################
+FROM ubuntu:18.04
+MAINTAINER Ahmad Imanudin <ahmad@imanudin.com>
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Please change this first before docker build
+ARG LDAP_PASS=O2hDdPL1Ti
+ARG ZIMBRAIP=45.32.108.69
+ARG ZIMBRAHOST=mail.imanudin.biz.id
+
+# Update and Upgrade Ubuntu
+RUN     apt-get update -y && \
+        apt-get upgrade -y && apt-get install sudo -y
+
+# Install dependencies
+RUN apt-get install -y locales wget python2.7 python-ldap vim openssl net-tools iputils-ping
+
+# Add LC_ALL on .bashrc
+RUN echo 'export LC_ALL="en_US.UTF-8"' >> /root/.bashrc
+RUN locale-gen en_US.UTF-8
+
+# Download and install ZeXtras Docs
+RUN wget -c https://download.zextras.com/zextras-docs-installer/latest/zextras-docs-ubuntu18.tgz
+RUN tar -zxvf zextras-docs-ubuntu18.tgz
+RUN sudo apt-get -y install /`pwd`/zextras-docs-installer/packages/*.deb
+RUN /var/lib/dpkg/info/zextras-docs-server.postinst
+RUN cp /`pwd`/zextras-docs-installer/bin/zdocs /usr/local/bin/
+RUN usermod -s /bin/bash lool
+RUN zdocs genkey
+
+# Zimbra Docs Configurations
+RUN echo "ldap_pass=$LDAP_PASS" > /tmp/ldap.config
+RUN echo "ldap_url=ldap://$ZIMBRAIP:389" >> /tmp/ldap.config
+RUN echo 'ldap_dn=uid=zimbra,cn=admins,cn=zimbra' >> /tmp/ldap.config
+RUN cp /tmp/ldap.config /opt/zimbra/conf/docs/
+RUN zdocs generate-config
+
+# Startup service
+RUN echo 'zdocs write-local-server' > /services.sh
+RUN echo 'echo "$ZIMBRAIP      $ZIMBRAHOST" >> /etc/hosts' >> /services.sh
+RUN echo 'su - lool -c "/opt/zimbra/docs/lool/bin/loolwsd --version --o:sys_template_path=/opt/zimbra/docs/generated/systemplate --o:child_root_path=/opt/zimbra/docs/generated/child-roots --o:file_server_root_path=/opt/zimbra/docs/lool/share/loolwsd"' >> /services.sh
+RUN chmod +x /services.sh
+
+# Entrypoint
+ENTRYPOINT /services.sh && /bin/bash
