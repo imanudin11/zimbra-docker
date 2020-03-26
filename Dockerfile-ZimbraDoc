@@ -9,9 +9,9 @@ MAINTAINER Ahmad Imanudin <ahmad@imanudin.com>
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Please change this first before docker build
-ARG LDAP_PASS=O2hDdPL1Ti
-ARG ZIMBRAIP=45.32.108.69
-ARG ZIMBRAHOST=mail.imanudin.biz.id
+ARG LDAP_PASS=ZIMBRA-LDAP-PASSWORD
+ARG ZIMBRAIP=IP-WHERE-PORT-389-LISTEN
+ARG ZIMBRAHOST=ZIMBRA-HOSTNAME
 
 # Update and Upgrade Ubuntu
 RUN     apt-get update -y && \
