@@ -3,7 +3,7 @@
 # Based on Ubuntu 20.04
 # Created by Darnel Hunter
 #################################################################
-FROM ubuntu:20.04
+FROM amd64/ubuntu:20.04
 MAINTAINER Darnel Hunter <dhunter@innotel.us>
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -16,13 +16,17 @@ RUN     apt-get update -y && \
         apt-get upgrade -y && apt-get install sudo -y
 
 # Install dependencies
-RUN apt-get install -y gcc make g++ openssl libxml2-dev wget nano perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl unzip shared-mime-info curl cron
+RUN apt-get install -y gcc make g++ openssl libxml2-dev wget nano perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl unzip shared-mime-info curl cron software-properties-common openjdk-8-jdk ant ant-optional ant-contrib ruby git maven build-essential debhelper
 
 #Install Webmin
 RUN cd /usr/src
 RUN wget http://download.webmin.com/devel/deb/webmin_current.deb
 RUN dpkg -i webmin_current.deb
 RUN apt-get -fy install
+
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
 # Download dns-auto.sh
 RUN curl -k https://raw.githubusercontent.com/imanudin11/zimbra-docker/master/dns-auto.sh > /srv/dns-auto.sh
