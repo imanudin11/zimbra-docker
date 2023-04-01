@@ -16,7 +16,7 @@ RUN     apt-get update -y && \
         apt-get upgrade -y && apt-get install sudo -y
 
 # Install dependencies
-RUN apt-get install -y gcc make g++ openssl libxml2-dev
+RUN apt-get install -y gcc make g++ openssl libxml2-dev wget nano
 
 #Install Webmin
 RUN cd /usr/src
