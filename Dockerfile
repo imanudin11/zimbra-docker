@@ -16,7 +16,7 @@ RUN     apt-get update -y && \
         apt-get upgrade -y && apt-get install sudo -y
 
 # Install dependencies
-RUN apt-get install -y gcc make g++ openssl libxml2-dev wget nano perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl unzip shared-mime-info curl cron software-properties-common openjdk-8-jdk ant ant-optional ant-contrib ruby git maven build-essential debhelper
+RUN apt-get install -y gcc make g++ openssl libxml2-dev wget nano perl libnet-ssleay-perl libauthen-pam-perl libio-pty-perl unzip shared-mime-info curl cron software-properties-common openjdk-8-jdk ant ant-optional ant-contrib ruby git maven build-essential debhelper lsb-core
 
 #Install Webmin
 RUN cd /usr/src
