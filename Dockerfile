@@ -1,19 +1,19 @@
 #################################################################
 # Dockerfile for Zimbra Ubuntu
-# Based on Ubuntu 18.04
-# Created by Ahmad Imanudin
+# Based on Ubuntu 20.04
+# Created by Darnel Hunter
 #################################################################
-FROM ubuntu:18.04
-MAINTAINER Ahmad Imanudin <ahmad@imanudin.com>
+FROM ubuntu:20.04
+MAINTAINER Darnel Hunter <dhunter@innotel.us>
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 
 ## Set Local Repos
 RUN cp /etc/apt/sources.list /tmp/
-RUN echo "deb http://singapore.mirrors.linode.com/ubuntu/ bionic main restricted universe multiverse" > /etc/apt/sources.list
-RUN echo "deb http://singapore.mirrors.linode.com/ubuntu/ bionic-updates main restricted universe multiverse" >> /etc/apt/sources.list
-RUN echo "deb http://singapore.mirrors.linode.com/ubuntu/ bionic-security main restricted universe multiverse" >> /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu focal main restricted" > /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu focal-updates main restricted" >> /etc/apt/sources.list
+RUN echo "deb http://security.ubuntu.com/ubuntu focal-security main restricted main restricted universe multiverse" >> /etc/apt/sources.list
 
 
 # Update and Upgrade Ubuntu
@@ -27,7 +27,7 @@ RUN echo 'resolvconf resolvconf/linkify-resolvconf boolean false' | debconf-set-
 RUN apt-get install -y bind9 bind9utils ssh netcat-openbsd sudo libidn11 libpcre3 libgmp10 libexpat1 libstdc++6 libperl5.26 libaio1 resolvconf unzip pax sysstat sqlite3 dnsutils iputils-ping w3m gnupg less lsb-release rsyslog net-tools vim tzdata wget iproute2 locales curl
 
 # Configure Timezone
-RUN echo "tzdata tzdata/Areas select Asia\ntzdata tzdata/Zones/Asia select Jakarta" > /tmp/tz ; debconf-set-selections /tmp/tz; rm /etc/localtime /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
+RUN echo "tzdata tzdata/Areas select America\ntzdata tzdata/Zones/America select New_York" > /tmp/tz ; debconf-set-selections /tmp/tz; rm /etc/localtime /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
 
 # Add LC_ALL on .bashrc
 RUN echo 'export LC_ALL="en_US.UTF-8"' >> /root/.bashrc
