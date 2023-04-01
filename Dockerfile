@@ -10,11 +10,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 
 ## Set Local Repos
-RUN cp /etc/apt/sources.list /tmp/
-RUN echo "deb http://archive.ubuntu.com/ubuntu focal main restricted" > /etc/apt/sources.list
-RUN echo "deb http://archive.ubuntu.com/ubuntu focal-updates main restricted" >> /etc/apt/sources.list
-RUN echo "deb http://security.ubuntu.com/ubuntu focal-security main restricted main restricted universe multiverse" >> /etc/apt/sources.list
-
 
 # Update and Upgrade Ubuntu
 RUN     apt-get update -y && \
